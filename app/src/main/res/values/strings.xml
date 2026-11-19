@@ -1,0 +1,142 @@
+<resources>
+    <string name="app_name">KiraCard</string>
+    
+    <!-- Import Screen -->
+    <string name="import_title">导入参考卡</string>
+    <string name="import_hint">粘贴 SillyTavern 角色卡 JSON</string>
+    <string name="import_from_file">从文件选择</string>
+    <string name="import_parse">解析并继续</string>
+    <string name="import_tip">支持 SillyTavern v2/v3 格式，自动识别字段</string>
+    <string name="import_empty_error">请粘贴 JSON 内容</string>
+    <string name="import_parse_error">解析失败：%s</string>
+    <string name="import_validating">正在解析...</string>
+    
+    <!-- Generate Screen -->
+    <string name="generate_title">AI 生成新角色</string>
+    <string name="generate_reference_card">参考卡预览</string>
+    <string name="generate_new_description">新角色描述</string>
+    <string name="generate_description_hint">描述你想创建的新角色，例如：一个傲娇的猫娘女仆，平时高冷但私下很粘人，说话带喵语气，喜欢吃小鱼干</string>
+    <string name="generate_options">生成选项</string>
+    <string name="generate_style_template">风格模板</string>
+    <string name="generate_temperature">温度</string>
+    <string name="generate_max_tokens">最大 Token</string>
+    <string name="generate_start">开始生成</string>
+    <string name="generate_cancel">取消</string>
+    <string name="generate_loading">正在生成角色卡...</string>
+    <string name="generate_building_prompt">正在构建 Prompt...</string>
+    <string name="generate_calling_ai">正在调用 AI...</string>
+    <string name="generate_parsing">正在解析结果...</string>
+    <string name="generate_empty_error">请输入新角色描述</string>
+    <string name="generate_error">生成失败：%s</string>
+    
+    <!-- Edit Screen -->
+    <string name="edit_title">预览与编辑</string>
+    <string name="edit_save_draft">保存草稿</string>
+    <string name="edit_export">导出</string>
+    <string name="edit_basic_info">基础信息</string>
+    <string name="edit_name">角色名称</string>
+    <string name="edit_creator">创建者</string>
+    <string name="edit_character_setting">角色设定</string>
+    <string name="edit_description">人设描述</string>
+    <string name="edit_personality">性格</string>
+    <string name="edit_dialogue_setting">对话设定</string>
+    <string name="edit_first_message">首条消息</string>
+    <string name="edit_example_dialogue">示例对话</string>
+    <string name="edit_world_setting">世界观与进阶</string>
+    <string name="edit_scenario">场景设定</string>
+    <string name="edit_system_prompt">系统提示词</string>
+    <string name="edit_alternate_greetings">备选问候语</string>
+    <string name="edit_add_greeting">添加问候语</string>
+    <string name="edit_tags">标签</string>
+    <string name="edit_add_tag">添加标签</string>
+    <string name="edit_creator_notes">创作者备注</string>
+    <string name="edit_required">此字段必填</string>
+    <string name="edit_draft_saved">草稿已保存 (ID: %d)</string>
+    <string name="edit_draft_save_failed">保存失败：%s</string>
+    <string name="edit_avatar_change">更换头像</string>
+    
+    <!-- Export Screen -->
+    <string name="export_title">导出角色卡</string>
+    <string name="export_preview">导出预览</string>
+    <string name="export_format">选择导出格式</string>
+    <string name="export_json">JSON 文件</string>
+    <string name="export_json_desc">标准角色卡格式，可导入 SillyTavern</string>
+    <string name="export_png">PNG 图片</string>
+    <string name="export_png_desc">卡片图片+嵌入元数据，可分享到社交媒体</string>
+    <string name="export_png_options">PNG 选项</string>
+    <string name="export_include_avatar">包含头像图片</string>
+    <string name="export_background">背景样式</string>
+    <string name="export_resolution">分辨率</string>
+    <string name="export_back">返回编辑</string>
+    <string name="export_share">导出并分享</string>
+    <string name="export_success">已导出到 %s</string>
+    <string name="export_error">导出失败：%s</string>
+    <string name="export_open_file">打开文件</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">设置</string>
+    <string name="settings_ai_api">AI API 配置</string>
+    <string name="settings_agent">Agent 子代理</string>
+    <string name="settings_ui">界面偏好</string>
+    <string name="settings_about">关于</string>
+    
+    <string name="settings_api_mode">API 模式</string>
+    <string name="settings_api_mode_mock">Mock (本地模拟)</string>
+    <string name="settings_api_mode_real">真实 API</string>
+    <string name="settings_api_provider">API 提供商</string>
+    <string name="settings_api_base_url">Base URL</string>
+    <string name="settings_api_key">API Key</string>
+    <string name="settings_model">模型</string>
+    <string name="settings_temperature">温度</string>
+    <string name="settings_max_tokens">最大 Token</string>
+    <string name="settings_not_set">未设置</string>
+    
+    <string name="settings_agent_enabled">启用 Agent 模式</string>
+    <string name="settings_agent_on">开启</string>
+    <string name="settings_agent_off">关闭</string>
+    <string name="settings_agent_count">Agent 数量</string>
+    
+    <string name="settings_theme">主题模式</string>
+    <string name="settings_theme_system">跟随系统</string>
+    <string name="settings_theme_light">浅色模式</string>
+    <string name="settings_theme_dark">深色模式</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_language_auto">跟随系统</string>
+    <string name="settings_auto_save_drafts">自动保存草稿</string>
+    <string name="settings_on">开启</string>
+    <string name="settings_off">关闭</string>
+    
+    <string name="settings_version">版本</string>
+    <string name="settings_open_source_licenses">开源许可证</string>
+    <string name="settings_view_licenses">查看许可证</string>
+    <string name="settings_privacy_policy">隐私政策</string>
+    <string name="settings_view_privacy">查看隐私政策</string>
+    
+    <!-- Style Templates -->
+    <string name="template_default">默认平衡</string>
+    <string name="template_tsundere">傲娇</string>
+    <string name="template_gentle">温柔治愈</string>
+    <string name="template_cold">高冷禁欲</string>
+    <string name="template_chaotic">疯批混乱</string>
+    <string name="template_lore_heavy">设定党</string>
+    
+    <!-- Toast/Snackbar -->
+    <string name="toast_copied">已复制到剪贴板</string>
+    <string name="toast_saved">已保存</string>
+    <string name="toast_exported">导出成功</string>
+    <string name="toast_permission_denied">权限被拒绝</string>
+    
+    <!-- Content Descriptions (Accessibility) -->
+    <string name="cd_avatar">角色头像</string>
+    <string name="cd_back">返回</string>
+    <string name="cd_close">关闭</string>
+    <string name="cd_more_options">更多选项</string>
+    <string name="cd_expand">展开</string>
+    <string name="cd_collapse">折叠</string>
+    
+    <!-- Common -->
+    <string name="common_back">返回</string>
+    <string name="common_error">错误</string>
+    <string name="common_retry">重试</string>
+    <string name="common_delete">删除</string>
+</resources>

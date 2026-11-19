@@ -1,0 +1,97 @@
+# Gradle
+.gradle/
+build/
+*/build/
+!*/src/main/**/build.gradle.kts
+
+# Local configuration
+local.properties
+*.iml
+.idea/
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Android Studio
+*.apk
+*.ap_
+*.aab
+*.aar
+*.jar
+*.so
+*.dex
+
+# Test reports
+*/build/reports/
+*/build/outputs/
+
+# Gradle wrapper jar (optional - can be committed)
+# gradle/wrapper/gradle-wrapper.jar
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Download scripts (temporary)
+download_wrapper*.ps1
+
+# CodeWhale
+.codewhale/
+
+# 旧代码备份（重构期临时目录，不入库）
+java_backup/
+
+# 目录（含历史任务/调研文档，不提交）
+DiaoYan/
+
+# 签名密钥与密钥库
+*.jks
+*.keystore
+*.p12
+keystore.properties
+signing.properties
+release-signing.properties
+
+# 截图与临时图片素材
+DiaoYan/*.png
+
+# 密钥
+*.pfx
+key.properties
+release.properties
+.env
+.env.*
+*.pem
+*.key
+google-services.json
+credentials.json
+service-account*.json
+.npmrc
+.netrc
+
+# 内部报告与构建日志
+err_*.txt
+build_*.txt
+light_hits.txt
+BUILD_FIXES.md
+docs/claude-*.md
+*调研报告*.md
+*完成报告*.md
+*审计*.md
+FINAL_DELIVERY_REPORT.md
+提示词工程与角色卡创作蒸馏报告.md
+
+# 根目录内部报告/日志（保留公开文档）
+/*.md
+!/README.md
+!/CHANGELOG.md
+/*.txt
+
+# 指定 docs 内部资料
+docs/公告系统接入说明.md
+docs/后续开发建议.md
+docs/DEEFEE3CB21D0F941E9EB19FCF5741FB.png

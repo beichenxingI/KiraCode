@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <include domain="sharedpref" path="." />
+    <include domain="database" path="." />
+    <include domain="file" path="exports" />
+    <!-- cache 默认不包含在 file/exports 内，无需显式 exclude，移除以通过 FullBackupContent lint -->
+</full-backup-content>

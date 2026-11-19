@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 基础色 -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+
+    <!-- KiraCode 品牌色 (Material 3 紫罗兰种子) -->
+    <color name="kiracode_primary">#FF6750A4</color>
+    <color name="kiracode_on_primary">#FFFFFFFF</color>
+    <color name="kiracode_surface">#FFFFFBFE</color>
+    <color name="kiracode_on_surface">#FF1C1B1F</color>
+    <color name="kiracode_background">#FFFFFBFE</color>
+
+    <!-- 启动屏背景 -->
+    <color name="kiracode_splash_background">#FF070A12</color>
+    <color name="splash_background">#FF070A12</color>
+
+    <!-- 主题窗口相关 -->
+    <color name="kiracode_window_background">#FF070A12</color>
+    <color name="kiracode_status_bar">#FF070A12</color>
+</resources>

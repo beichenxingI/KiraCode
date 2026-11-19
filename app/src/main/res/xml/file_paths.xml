@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <files-path name="kiracode_exports" path="exports/" />
+    <cache-path name="kiracode_cache" path="cache/" />
+    <external-files-path name="kiracode_downloads" path="Download/KiraCode/" />
+</paths>

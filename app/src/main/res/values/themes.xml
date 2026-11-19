@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+      KiraCode 应用主题。
+      Compose 完全接管 UI 渲染，XML 主题仅承担：
+        1. 无 ActionBar（由 Compose TopAppBar 提供）；
+        2. windowBackground / statusBar 颜色；
+        3. 边缘到边缘显示配置。
+    -->
+    <style name="Theme.KiraCode" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/kiracode_window_background</item>
+        <item name="android:statusBarColor">@color/kiracode_status_bar</item>
+        <item name="android:navigationBarColor">@color/kiracode_window_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+    </style>
+
+    <!-- Splash：首帧前也用极光深色铺底，避免白边 -->
+    <style name="Theme.KiraCode.Splash" parent="Theme.KiraCode">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">@color/splash_background</item>
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="31">@color/splash_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+    </style>
+</resources>
