@@ -166,6 +166,19 @@ class RegexGenerationPromptsTest {
     }
 
     @Test
+    fun `agent prompt aligns findRegex tag with output protocol`() {
+        RegexGenerationMode.entries.forEach { mode ->
+            val prompt = RegexGenerationPrompts.agentPromptFor(mode)
+
+            assertTrue(prompt.contains("必须与正则 findRegex 捕获的外层标签完全一致"))
+            assertTrue(prompt.contains("1. 先确定正则的 findRegex 外层标签"))
+            assertTrue(prompt.contains("2. 再据此生成 system_prompt 和 description 中的输出协议"))
+            assertTrue(prompt.contains("3. 两者必须对齐，不能各写各的"))
+            assertTrue(prompt.contains("协议中的顶层包裹标签必须是 <scene_body>"))
+        }
+    }
+
+    @Test
     fun `custom description protocol is preserved and mirrored to system prompt`() {
         val customProtocol = """━━━━━━━━ 输出协议 ━━━━━━━━
 每次回复必须包裹在 <custom_state></custom_state> 中，禁止输出协议外文字。

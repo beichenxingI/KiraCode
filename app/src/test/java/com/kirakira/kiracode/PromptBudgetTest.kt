@@ -27,16 +27,16 @@ class PromptBudgetTest {
     fun `agent protocol stays under budget`() {
         val prompt = BuiltinSystemPrompt.build(WorkMode.AGENT)
         println("AGENT_PROMPT chars=" + prompt.length + " tokens≈" + estimateTokens(prompt))
-        // 四模式 + 强制工具执行 + arguments JSON 转义说明，上限 4500→4700
-        assertTrue("协议过大: " + prompt.length + " chars", prompt.length < 4700)
+        // 四模式 + 强制工具执行 + JSON 转义 + 输出协议双写/标签一致性，上限 4700→5800
+        assertTrue("协议过大: " + prompt.length + " chars", prompt.length < 5800)
     }
 
     @Test
     fun `full auto prompt stays under budget`() {
         val prompt = BuiltinSystemPrompt.build(WorkMode.YOLO, cardMasterEnabled = true)
         println("FULL_AUTO_PROMPT chars=" + prompt.length + " tokens≈" + estimateTokens(prompt))
-        // 四模式 + 自洽审查 + 强制工具执行/JSON 转义说明，上限 5000→5300
-        assertTrue(prompt.length < 5300)
+        // 四模式 + 自洽审查 + JSON 转义 + 输出协议双写/标签一致性，上限 5300→6300
+        assertTrue(prompt.length < 6300)
     }
 
     @Test

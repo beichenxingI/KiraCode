@@ -54,8 +54,8 @@ class ReferenceAndLargeCardRulesTest {
     @Test
     fun `budget still respected with new layers`() {
         val agent = BuiltinSystemPrompt.build(WorkMode.AGENT, hasReferenceMaterial = true, usesCardIndex = true)
-        assertTrue("AGENT 大卡全层提示词过大: ${agent.length} chars", agent.length < 5000)
+        assertTrue("AGENT 大卡全层提示词过大: ${agent.length} chars", agent.length < 6000)
         val yolo = BuiltinSystemPrompt.build(WorkMode.YOLO, cardMasterEnabled = true, hasReferenceMaterial = true)
-        assertTrue("YOLO 全层提示词过大: ${yolo.length} chars", yolo.length < 5600)
+        assertTrue("YOLO 全层提示词过大: ${yolo.length} chars", yolo.length < 6800)
     }
 }

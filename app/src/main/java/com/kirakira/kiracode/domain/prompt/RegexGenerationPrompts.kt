@@ -115,7 +115,16 @@ description 中只允许出现一份输出协议，不得出现两段格式互�
 - 美化显示规则默认使用 placement=[2]、markdownOnly=true、promptOnly=false。
 - 工具参数必须是合法 JSON；JSON 字符串中的真实换行按标准单次转义为 \n，解析后 HTML/CSS 必须保留真实换行。
 - 模型每轮只输出格式协议约定的 XML/结构化文本，不能在角色卡对话正文中输出完整 HTML。
-- 正则外层捕获标签必须与角色卡 description 中输出协议的示例完全一致。"""
+
+【协议与 findRegex 一致性】
+输出协议中定义的 XML 标签（如 <scene_body>、<state> 等）必须与正则 findRegex 捕获的外层标签完全一致。
+如果 findRegex = /<scene_body>([\s\S]*?)<\/scene_body>/g，
+那么协议中的顶层包裹标签必须是 <scene_body>，不能是其他标签。
+生成顺序：
+1. 先确定正则的 findRegex 外层标签
+2. 再据此生成 system_prompt 和 description 中的输出协议
+3. 两者必须对齐，不能各写各的
+- 正则外层捕获标签必须与 system_prompt、description 中输出协议的顶层标签完全一致。"""
 
     private const val EXECUTION_REQUIREMENTS = """
 
