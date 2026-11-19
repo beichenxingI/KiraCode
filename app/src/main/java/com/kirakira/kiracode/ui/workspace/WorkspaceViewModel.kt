@@ -176,10 +176,6 @@ class WorkspaceViewModel @Inject constructor(
     private val _activePersonaId = MutableStateFlow<String?>(null)
     val activePersonaId: StateFlow<String?> = _activePersonaId
 
-    /** 首次启动引导（AGPLv3 声明） */
-    private val _isFirstLaunch = MutableStateFlow(false)
-    val isFirstLaunch: StateFlow<Boolean> = _isFirstLaunch
-
     // ============ 思考强度探测 ============
 
     /** 探测结果缓存：model → true支持/false不支持；无记录=未探测 */
@@ -2575,19 +2571,6 @@ class WorkspaceViewModel @Inject constructor(
         _uiState.update { s -> if (s is ChatUiState.Ready) s.copy(error = null) else s }
     }
 
-    // ============ V1.0 首启引导 ============
-
-    init {
-        viewModelScope.launch {
-            _isFirstLaunch.value = preferencesRepository.isFirstLaunch.first()
-        }
-    }
-
-    /** 用户同意首启声明 */
-    fun completeFirstLaunch() {
-        _isFirstLaunch.value = false
-        viewModelScope.launch { runCatching { preferencesRepository.setFirstLaunchCompleted() } }
-    }
 }
 
 /** 轻量 token 估算（中文≈1字1token，英文≈4字符1token） */

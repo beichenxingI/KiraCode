@@ -68,6 +68,9 @@ interface PreferencesRepository {
     val disclaimerAccepted: Flow<Boolean>
     suspend fun setDisclaimerAccepted(accepted: Boolean)
 
+    /** 首次引导完成 + 免责声明同意，同一事务写入，避免出现只写一半的状态 */
+    suspend fun acceptFirstRunTerms()
+
     // 导出目录偏好
     val exportDirectory: Flow<String?>
     suspend fun setExportDirectory(path: String?)

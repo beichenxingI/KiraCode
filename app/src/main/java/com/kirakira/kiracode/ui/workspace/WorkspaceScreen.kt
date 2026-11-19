@@ -118,7 +118,6 @@ fun WorkspaceScreen(
     var pendingExportFormat by remember { mutableStateOf(ExportFormat.PNG) }
     var guessSheetTarget by remember { mutableStateOf<Pair<String, String>?>(null) }
     var showModifyDialog by remember { mutableStateOf<ModifyTarget?>(null) }
-    var showLicenseDialog by remember { mutableStateOf(false) }
     val overlayState = remember { com.kirakira.kiracode.ui.system.OverlayHostState() }
     val allRecords = remember(sessionListState.sessions) {
         sessionsToRecords(sessionListState.sessions).sortedFavoritesFirst()
@@ -192,7 +191,6 @@ fun WorkspaceScreen(
         } else if (viewModel.currentSessionId == null) {
             viewModel.restoreLastSession()
         }
-        if (viewModel.isFirstLaunch.value) showLicenseDialog = true
     }
 
     // 提示与错误
@@ -533,17 +531,6 @@ fun WorkspaceScreen(
     )
 
     // ============ 对话框 ============
-
-    // 首次启动 AGPLv3 声明引导（功能保留）
-    if (showLicenseDialog) {
-        FirstLaunchLicenseDialog(
-            onAgree = {
-                viewModel.completeFirstLaunch()
-                showLicenseDialog = false
-            },
-            onDismiss = { showLicenseDialog = false }
-        )
-    }
 
     // 工作记录浮窗经 OverlayHost 打开（L1）
 

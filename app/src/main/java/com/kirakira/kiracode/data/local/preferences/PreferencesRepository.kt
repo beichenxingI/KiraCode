@@ -268,6 +268,13 @@ class PreferencesRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun acceptFirstRunTerms() {
+        dataStore.edit {
+            it[PreferencesKeys.IS_FIRST_LAUNCH] = false
+            it[PreferencesKeys.DISCLAIMER_ACCEPTED] = true
+        }
+    }
+
     // ============ Export Directory ==========
     override val exportDirectory: Flow<String?> = dataStore.data
         .map { it[PreferencesKeys.LAST_EXPORT_DIR] }
