@@ -2,6 +2,8 @@ package com.kirakira.kiracode
 
 import com.kirakira.kiracode.domain.agent.CardOperation
 import com.kirakira.kiracode.domain.agent.CardOperationApplier
+import com.kirakira.kiracode.domain.agent.ToolRegistry
+import com.kirakira.kiracode.domain.agent.core.UpdateCardAction
 import com.kirakira.kiracode.domain.model.CharacterCard
 import com.kirakira.kiracode.domain.model.GenerationRequest
 import com.kirakira.kiracode.domain.model.RegexGenerationMode
@@ -12,6 +14,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlinx.coroutines.test.runTest
 
 class RegexGenerationPromptsTest {
 
@@ -143,6 +146,83 @@ class RegexGenerationPromptsTest {
         assertTrue(prompt.contains("不能将示范内容原样粘贴进 description 或任何角色卡字段"))
         assertTrue(prompt.contains("禁止原样复制到角色卡"))
         assertTrue(prompt.contains("以上内容不得出现在你生成的角色卡中"))
+    }
+
+    @Test
+    fun `agent prompt requires dual write and tool order`() {
+        RegexGenerationMode.entries.forEach { mode ->
+            val prompt = RegexGenerationPrompts.agentPromptFor(mode)
+            val systemStep = prompt.indexOf("1. update_card_field(field=\"system_prompt\"")
+            val descriptionStep = prompt.indexOf("2. update_card_field(field=\"description\"")
+            val regexStep = prompt.indexOf("3. update_card_regex_add")
+
+            assertTrue(prompt.contains("输出协议必须同时写入两个字段"))
+            assertTrue(prompt.contains("两个字段的协议内容必须完全一致"))
+            assertTrue(prompt.contains("description 中只允许出现一份输出协议"))
+            assertTrue(systemStep >= 0)
+            assertTrue(systemStep < descriptionStep)
+            assertTrue(descriptionStep < regexStep)
+        }
+    }
+
+    @Test
+    fun `custom description protocol is preserved and mirrored to system prompt`() {
+        val customProtocol = """━━━━━━━━ 输出协议 ━━━━━━━━
+每次回复必须包裹在 <custom_state></custom_state> 中，禁止输出协议外文字。
+<custom_state>
+<narrative>$1</narrative>
+</custom_state>
+━━━━━━━━━━━━━━━━━━━━━━"""
+        val source = CharacterCard(
+            name = "自定义协议",
+            description = "角色设定正文\n\n$customProtocol",
+            systemPrompt = "已有系统规则"
+        )
+
+        val synced = RegexGenerationPrompts.applyDescriptionProtocol(
+            source,
+            RegexGenerationMode.FULL_FRONTEND
+        )
+        val syncedAgain = RegexGenerationPrompts.applyDescriptionProtocol(
+            synced,
+            RegexGenerationMode.FULL_FRONTEND
+        )
+
+        assertEquals(1, Regex("━━━━━━━━ 输出协议 ━━━━━━━━").findAll(synced.description).count())
+        assertTrue(synced.description.contains("<custom_state>"))
+        assertFalse(synced.description.contains("<scene_body>"))
+        assertTrue(synced.systemPrompt.startsWith("已有系统规则"))
+        assertEquals(1, Regex("━━━━━━━━ 输出协议 ━━━━━━━━").findAll(synced.systemPrompt).count())
+        assertTrue(synced.systemPrompt.endsWith(customProtocol))
+        assertEquals(synced, syncedAgain)
+    }
+
+    @Test
+    fun `tool registry mirrors description protocol into system prompt`() = runTest {
+        val registry = ToolRegistry { card, operations ->
+            Result.success(CardOperationApplier.apply(card, operations))
+        }
+        registry.setCurrentCard(CharacterCard(name = "测试卡", systemPrompt = "原有系统规则"))
+
+        registry.execute(
+            UpdateCardAction(
+                operations = listOf(
+                    CardOperation.SetField(
+                        fieldName = "description",
+                        value = "角色设定\n\n━━━━━━━━ 输出协议 ━━━━━━━━\n" +
+                            "每轮包裹在 <custom_state></custom_state>。\n" +
+                            "━━━━━━━━━━━━━━━━━━━━━━"
+                    )
+                ),
+                functionName = "update_card_field"
+            ),
+            RegexGenerationMode.FULL_FRONTEND
+        )
+
+        val card = registry.getCurrentCard()!!
+        assertTrue(card.systemPrompt.startsWith("原有系统规则"))
+        assertTrue(card.systemPrompt.contains("<custom_state>"))
+        assertFalse(card.systemPrompt.contains("<scene_body>"))
     }
 
     @Test

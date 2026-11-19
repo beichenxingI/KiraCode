@@ -10,6 +10,7 @@ import com.kirakira.kiracode.domain.agent.core.ThinkObservation
 import com.kirakira.kiracode.domain.agent.core.UpdateCardAction
 import com.kirakira.kiracode.domain.agent.tools.CardFunctions
 import com.kirakira.kiracode.domain.agent.tools.RegexScriptValidator
+import com.kirakira.kiracode.domain.prompt.RegexGenerationPrompts
 import com.kirakira.kiracode.domain.model.CharacterCard
 import com.kirakira.kiracode.domain.model.RegexGenerationMode
 import kotlinx.serialization.json.JsonObject
@@ -99,7 +100,7 @@ class ToolRegistry(
 
                 result.fold(
                     onSuccess = { newCard ->
-                        currentCard = newCard
+                        currentCard = RegexGenerationPrompts.synchronizeDualWriteProtocol(newCard)
                         CardObservation(
                             actionId = action.id,
                             isError = false,

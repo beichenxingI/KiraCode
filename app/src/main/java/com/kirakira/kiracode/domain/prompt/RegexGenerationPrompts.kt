@@ -24,33 +24,85 @@ object RegexGenerationPrompts {
         else -> SHARED_DESCRIPTION_PROTOCOL
     }
 
-    /** 幂等追加协议；重复编辑或切换模式时替换末尾旧协议，不重复堆积。 */
+    /**
+     * 幂等追加协议：
+     * - 已有自定义协议时原样保留，避免用固定示范覆盖本次任务标签；
+     * - 末尾仍是已知默认协议时才允许随模式切换替换。
+     */
     fun appendDescriptionProtocol(description: String, mode: RegexGenerationMode): String {
-        val withoutOldProtocol = TRAILING_PROTOCOL_REGEX.replace(description.trimEnd(), "").trimEnd()
-        return buildString {
-            if (withoutOldProtocol.isNotBlank()) {
-                append(withoutOldProtocol)
-                append("\n\n")
-            }
-            append(descriptionProtocolFor(mode))
+        val trimmed = description.trimEnd()
+        val existing = extractTrailingProtocol(trimmed)
+        val target = when {
+            existing == null -> descriptionProtocolFor(mode)
+            existing in KNOWN_DEFAULT_PROTOCOLS -> descriptionProtocolFor(mode)
+            else -> existing
         }
+        val withoutProtocols = PROTOCOL_BLOCK_REGEX.replace(trimmed, "").trimEnd()
+        return appendProtocolBlock(withoutProtocols, target)
+    }
+
+    /** 将 description 的协议原文同步到 system_prompt；两处只保留同一份协议。 */
+    fun synchronizeDualWriteProtocol(card: CharacterCard): CharacterCard {
+        val protocol = extractTrailingProtocol(card.description) ?: return card
+        return card.copy(systemPrompt = synchronizeSystemPrompt(card.systemPrompt, protocol))
     }
 
     fun applyDescriptionProtocol(card: CharacterCard, mode: RegexGenerationMode): CharacterCard =
-        card.copy(description = appendDescriptionProtocol(card.description, mode))
+        synchronizeDualWriteProtocol(
+            card.copy(description = appendDescriptionProtocol(card.description, mode))
+        )
+
+    private fun appendProtocolBlock(base: String, protocol: String): String = buildString {
+        if (base.isNotBlank()) {
+            append(base)
+            append("\n\n")
+        }
+        append(protocol)
+    }
+
+    private fun extractTrailingProtocol(text: String): String? =
+        TRAILING_PROTOCOL_REGEX.find(text.trimEnd())?.value?.trim()
+
+    private fun synchronizeSystemPrompt(systemPrompt: String, protocol: String): String {
+        val withoutProtocols = PROTOCOL_BLOCK_REGEX.replace(systemPrompt.trimEnd(), "").trimEnd()
+        return if (withoutProtocols.isBlank()) protocol else "$withoutProtocols\n\n$protocol"
+    }
 
     private val TRAILING_PROTOCOL_REGEX = Regex(
         """\n*\s*━━━━━━━━ (?:输出协议|输出风格协议) ━━━━━━━━[\s\S]*?━━━━━━━━━━━━━━━━━━━━━━\s*$"""
     )
+    private val PROTOCOL_BLOCK_REGEX = Regex(
+        """━━━━━━━━ (?:输出协议|输出风格协议) ━━━━━━━━[\s\S]*?━━━━━━━━━━━━━━━━━━━━━━"""
+    )
+    private val KNOWN_DEFAULT_PROTOCOLS by lazy {
+        setOf(FULL_FRONTEND_DESCRIPTION_PROTOCOL, SHARED_DESCRIPTION_PROTOCOL)
+    }
 
     private const val COMMON_RULES = """
 
 
+【输出协议双写（强制）】
+输出协议必须同时写入两个字段，内容保持一致：
+1. system_prompt 字段：写入完整的输出协议说明，包括标签结构、顺序、禁止事项。
+   部分 SillyTavern 兼容平台可以解析此字段。
+2. description 字段末尾：同样写入完整的输出协议说明。
+   部分类酒馆平台不解析 system_prompt，只读取 description，必须在此兜底。
+
+两个字段的协议内容必须完全一致，不能互相矛盾。
+description 中只允许出现一份输出协议，不得出现两段格式互相冲突的说明。
+协议必须根据本次任务重新生成，禁止把示范模板中的样例标签原样复制到角色卡。
+
+【工具调用顺序（状态前端正则）】
+1. update_card_field(field="system_prompt", value=输出协议全文)
+2. update_card_field(field="description", value=原有角色设定 + "\\n\\n" + 输出协议全文)
+3. update_card_regex_add(正则参数)
+步骤 1 和 2 必须在步骤 3 之前完成，确保协议与正则一致。
+
 【落卡要求】
 - 按上述数量分别调用 update_card_regex_add；每条脚本独立，不合并成 JSON 文本回复。
 - 所有脚本 placement=[2]、markdownOnly=true、promptOnly=false、disabled=false。
-- 输出格式约定由 description 末尾内嵌的协议承担，不依赖角色卡 system_prompt、post_history_instructions 或世界书。
-- 保留系统追加到 description 末尾的对应协议，不删除、不改写、不重复添加。"""
+- 不依赖世界书或 post_history_instructions 传递输出格式。
+- 协议必须来自本次 findRegex 的顶层标签；不得复制示范或沿用其他角色的标签。"""
 
     private const val FORMAT_RULES = """
 

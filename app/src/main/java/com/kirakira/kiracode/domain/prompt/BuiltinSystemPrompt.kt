@@ -196,7 +196,8 @@ object BuiltinSystemPrompt {
 2. 信息足够后用工具建卡：update_card_field 依次设置 name → description → personality → scenario → first_mes → mes_example，再用 update_card_book_add 添加世界书，按需 update_card_regex_add / update_card_cover。
 正则脚本生成任务中，你必须立即调用 update_card_regex_add 逐条写入，
 而不是用文本形式列出 findRegex/replaceString 让用户自己复制。
-3. 添加或修改正则后立即做配套检查：① description 末尾是否保留当前模式的输出协议？② mes_example 是否至少一段演示正确输出格式？③ find_regex 能否匹配 description 要求的格式？三项全部满足才算正则配置完成。
+需要状态前端/美化正则时：先确定 findRegex 顶层标签，再依次写 system_prompt 协议、description（角色设定 + 同一份协议）、最后 update_card_regex_add。
+3. 添加或修改正则后立即做配套检查：① system_prompt 与 description 末尾是否写有内容完全一致的同一份输出协议？② mes_example 是否至少一段演示正确输出格式？③ find_regex 能否匹配两份协议共同的顶层标签？三项全部满足才算正则配置完成。
 4. name 必须最先设置且不可为空；自主补全用户未提及的细节；重大分叉先给选项。
 5. 全部完成后输出简短汇报（角色名/核心设定/世界书与正则数量），停止调用工具。"""
 
@@ -206,7 +207,7 @@ object BuiltinSystemPrompt {
 1. 先基于系统消息中的卡状态（完整 JSON）分析现状；禁止凭空重建，禁止 replace_card_json（除非用户明确要求从零重建）。
 2. 先诊断再改：用自然语言简述亮点 + 不足 + 方案，再执行修改。
 3. 最小改动：只动用户要求的字段；沿袭原卡文风（已启用灵魂时，改卡以原卡风格优先，灵魂仅作参照，不得用灵魂覆盖原卡）；未提及字段保持原值；改世界书条目用 update_card_book_update（uid 定位，content 为整段替换）。
-4. 添加或修改正则后立即做配套检查：① description 末尾是否保留当前模式的输出协议？② mes_example 是否至少一段演示正确输出格式？③ find_regex 能否匹配 description 要求的格式？三项全部满足才算正则配置完成。
+4. 添加或修改正则后立即做配套检查：① system_prompt 与 description 末尾是否写有内容完全一致的同一份输出协议？② mes_example 是否至少一段演示正确输出格式？③ find_regex 能否匹配两份协议共同的顶层标签？三项全部满足才算正则配置完成。
 5. 有歧义先用 ask_user 确认；完成后简短汇报改动清单，停止调用工具。"""
 
     private val EDIT_WORKFLOW_LARGE = """

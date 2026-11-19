@@ -37,6 +37,11 @@ val updateCardField: JsonObject = buildJsonObject {
             - 内容与当前完全相同时
             - 用户没有要求修改时覆盖核心设定
 
+            状态前端/正则协议双写：
+            - system_prompt 写入完整输出协议；
+            - description 末尾写入同一份协议（原有设定 + 空行 + 协议）；
+            - 两处协议必须逐字一致，顶层标签必须与 findRegex 外层捕获标签一致。
+
             field 不合法时返回错误，不会创建新字段。
         """.trimIndent())
         putJsonObject("parameters") {
@@ -57,7 +62,7 @@ val updateCardField: JsonObject = buildJsonObject {
                 }
                 putJsonObject("value") {
                     put("type", "string")
-                    put("description", "新值。列表字段分隔规则：tags 用逗号分隔；alternate_greetings 每条一行（换行分隔，不能用逗号）。其余字段为完整文本（多行可含换行）")
+                    put("description", "新值。列表字段分隔规则：tags 用逗号分隔；alternate_greetings 每条一行（换行分隔，不能用逗号）。其余字段为完整文本（多行可含换行）。输出协议双写时：system_prompt 写完整协议，description 写“角色设定 + 空行 + 同一份协议”，两处必须一致")
                 }
                 putJsonObject("ai_guess") {
                     put("type", "boolean")
