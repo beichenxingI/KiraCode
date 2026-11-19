@@ -108,7 +108,11 @@ object RegexGenerationPrompts {
 9. 输出协议必须明确：模型只输出 XML/结构化正文，不能输出 HTML 文件。
 10. 调用 update_card_regex_add 时设置 placement=[2]、markdownOnly=true、promptOnly=false。
 
-格式对齐的骨架参考（内容与视觉均可自行替换，但结构必须完整）：
+【以下是示范，仅供参考，禁止原样复制到角色卡】
+⚠️ 下方示范是给你理解结构用的参考，不是角色卡的输出协议。
+   角色卡输出协议必须根据本次 findRegex 的顶层标签和字段重新生成，
+   不能将示范内容原样粘贴进 description 或任何角色卡字段。
+━━━━━━━━ 示范开始 ━━━━━━━━
 ```html
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -132,6 +136,11 @@ object RegexGenerationPrompts {
 </body>
 </html>
 ```
+━━━━━━━━ 示范结束 ━━━━━━━━
+【示范结束，以上内容不得出现在你生成的角色卡中】
+⚠️ 上方示范是给你理解结构用的参考，不是角色卡的输出协议。
+   角色卡输出协议必须根据本次 findRegex 的顶层标签和字段重新生成，
+   不能将示范内容原样粘贴进 description 或任何角色卡字段。
 
 视觉设计不固定：
 你可以根据题材、角色气质和用户要求自由设计前端。

@@ -125,6 +125,27 @@ class RegexGenerationPromptsTest {
     }
 
     @Test
+    fun `full frontend example is fenced by explicit anti-copy boundaries`() {
+        val prompt = RegexGenerationPrompts.promptFor(RegexGenerationMode.FULL_FRONTEND)
+
+        val warningBefore = prompt.indexOf("下方示范是给你理解结构用的参考")
+        val exampleStart = prompt.indexOf("━━━━━━━━ 示范开始 ━━━━━━━━")
+        val skeleton = prompt.indexOf("<!DOCTYPE html>", exampleStart)
+        val exampleEnd = prompt.indexOf("━━━━━━━━ 示范结束 ━━━━━━━━")
+        val warningAfter = prompt.indexOf("上方示范是给你理解结构用的参考")
+
+        assertTrue(warningBefore >= 0)
+        assertTrue(warningBefore < exampleStart)
+        assertTrue(exampleStart < skeleton)
+        assertTrue(skeleton < exampleEnd)
+        assertTrue(exampleEnd < warningAfter)
+        assertTrue(prompt.contains("不是角色卡的输出协议"))
+        assertTrue(prompt.contains("不能将示范内容原样粘贴进 description 或任何角色卡字段"))
+        assertTrue(prompt.contains("禁止原样复制到角色卡"))
+        assertTrue(prompt.contains("以上内容不得出现在你生成的角色卡中"))
+    }
+
+    @Test
     fun `description protocols match modes and stay at the end`() {
         val full = RegexGenerationPrompts.appendDescriptionProtocol(
             "角色设定正文",
